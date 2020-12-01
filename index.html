@@ -1,23 +1,84 @@
 <!doctype html>
 
-<html lang="en">
+<html>
 <head>
-  <meta charset="utf-8">
+    <title>Custom button example</title>
 
-  <title>ChatBox</title>
- 
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width , initial-scale = 1.0">
-  <link rel="stylesheet" href="css/styles.css?v=1.0">
+    <style>
+        .button {
+            font-family: sans-serif;
+            font-size: 16px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            transition: opacity .5s;
+            cursor: pointer;
+            background: #045ffe;
+            border-radius: 20px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
+        .button:hover {
+            opacity: .6;
+        }
+
+        .button:active {
+            opacity: .4;
+        }
+
+        .button.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
 </head>
-
 <body>
+    <div class="button hidden">Open Chat</div>
 
-    <h1>Hello! Test Nina's ChatBot!</h1>
+    <script>
+        var button = document.querySelector('.button')
+        button.addEventListener('click', onButtonClick)
+
+        function onButtonClick () {
+            BE_API.openChatWindow()
+            hideButton()
+        }
+
+        function showButton () {
+            button.classList.remove('hidden')
+        }
+
+        function hideButton () {
+            button.classList.add('hidden')
+        }
+
+        window.BE_API = window.BE_API || {}
+
+        window.BE_API.onLoad = function () {
+            window.BE_API.hideChatWindow()
+            showButton()
+        }
+
+        window.BE_API.onChatWindowOpen = function () {
+            hideButton()
+        }
+
+        window.BE_API.onChatWindowClose = function () {
+            window.BE_API.hideChatWindow()
+        }
+
+        window.BE_API.onChatWindowHide = function () {
+            showButton()
+        }
+    </script>
 
   
-<!-- Start of ChatBot (www.chatbot.com) code -->
+  <!-- Start of ChatBot (www.chatbot.com) code -->
 <script type="text/javascript">
     window.__be = window.__be || {};
     window.__be.id = "5fbc996cda258d0007c19aeb";
@@ -28,6 +89,5 @@
     })();
 </script>
 <!-- End of ChatBot code -->
-
 </body>
 </html>
